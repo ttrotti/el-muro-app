@@ -1,4 +1,6 @@
 const Post = require('../models/Post')
+const sendgrid = require('@sendgrid/mail')
+// sendgrid.setApiKey(process.env.SENDGRIDAPIKEY)
 
 exports.viewCreateScreen = function(req, res) {
     res.render('create-post');
@@ -8,6 +10,14 @@ exports.create = function(req, res) {
     let post = new Post(req.body, req.session.user._id);
     post.create()
     .then((newId) => {
+        // sendgrid.send({
+        //     to:'',
+        //     from: 'RELLENAR CON UN VERIFIED EMAIL',
+        //     subject: 'Congrats on Creating a New Post!',
+        //     text: 'You did a great job!',
+        //     html: 'You did a <strong>GREAT</strong> job!'
+        // }).then(() => console.log('Mail sent successfully'))
+        // .catch(error => console.error(error.toString()))
         req.flash("success", "Post successfully created")
         res.redirect(`post/${newId}`)
     })
